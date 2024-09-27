@@ -1,5 +1,7 @@
 package sd.project.dp_ovchipkaart.domain.reiziger;
 
+import sd.project.dp_ovchipkaart.domain.OV_chipkaart.OVChipkaartDAOPsql;
+import sd.project.dp_ovchipkaart.domain.OV_chipkaart.OV_chipkaart;
 import sd.project.dp_ovchipkaart.domain.adres.Adres;
 import sd.project.dp_ovchipkaart.domain.adres.AdresDAOPsql;
 
@@ -11,10 +13,12 @@ import java.util.List;
 public class ReizigerDAOPsql implements ReizigerDAO {
     private final Connection con;
     private final AdresDAOPsql adresDAOPsql;
+    private final OVChipkaartDAOPsql ovChipkaartDAOPsql;
 
-    public ReizigerDAOPsql(Connection con, AdresDAOPsql adresDAOPsql) {
+    public ReizigerDAOPsql(Connection con, AdresDAOPsql adresDAOPsql, OVChipkaartDAOPsql ovChipkaartDAOPsql) {
         this.con = con;
         this.adresDAOPsql = adresDAOPsql;
+        this.ovChipkaartDAOPsql = ovChipkaartDAOPsql;
     }
 
     public boolean save(Reiziger reiziger) throws SQLException {
@@ -30,6 +34,11 @@ public class ReizigerDAOPsql implements ReizigerDAO {
             // Als de reiziger een adres heeft, roep de save-methode van AdresDAOPsql aan
             if (reiziger.getAdres() != null) {
                 adresDAOPsql.Save(reiziger.getAdres());  // Reiziger wordt doorgegeven aan AdresDAO
+            }
+            if (reiziger.getOvchipkaarten() != null) {
+                for (OV_chipkaart ovChipkaart : reiziger.getOvchipkaarten()) {
+                    ovChipkaartDAOPsql.save(ovChipkaart);
+                }
             }
         }
             return true;
@@ -71,6 +80,9 @@ public class ReizigerDAOPsql implements ReizigerDAO {
                     reiziger.setTussenvoegsels(rs.getString("tussenvoegsel"));
                     reiziger.setAchternaam(rs.getString("achternaam"));
                     reiziger.setGeboortedatum(rs.getDate("geboortedatum"));
+
+                    List<OV_chipkaart> ovChipkaarten = ovChipkaartDAOPsql.findByReiziger(reiziger);
+                    reiziger.setOvchipkaart(ovChipkaarten);
 
                     return reiziger;
                 } else {
@@ -123,6 +135,9 @@ public class ReizigerDAOPsql implements ReizigerDAO {
                 );
                 Adres adres = adresDAOPsql.FindByReiziger(reiziger);
                 reiziger.setAdres(adres);
+
+                List<OV_chipkaart> ovChipkaarten = ovChipkaartDAOPsql.findByReiziger(reiziger);
+                reiziger.setOvchipkaart(ovChipkaarten);
 
                 reizigers.add(reiziger);
             }

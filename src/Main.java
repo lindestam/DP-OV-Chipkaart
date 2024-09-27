@@ -1,3 +1,5 @@
+import sd.project.dp_ovchipkaart.domain.OV_chipkaart.OVChipkaartDAO;
+import sd.project.dp_ovchipkaart.domain.OV_chipkaart.OVChipkaartDAOPsql;
 import sd.project.dp_ovchipkaart.domain.adres.Adres;
 import sd.project.dp_ovchipkaart.domain.adres.AdresDAO;
 import sd.project.dp_ovchipkaart.domain.adres.AdresDAOPsql;
@@ -16,10 +18,11 @@ public class Main {
 
             // Maak de DAO-objecten aan
             AdresDAOPsql adresDAO = new AdresDAOPsql(myCon);
-            ReizigerDAOPsql reizigerDAO = new ReizigerDAOPsql(myCon, adresDAO);
+            OVChipkaartDAOPsql ovchipkaartDAO = new OVChipkaartDAOPsql(myCon);
+            ReizigerDAOPsql reizigerDAO = new ReizigerDAOPsql(myCon, adresDAO, ovchipkaartDAO);
 
             // Test de DAO-methoden
-            testReizigerDAO(reizigerDAO, adresDAO);
+            testReizigerDAO(reizigerDAO, adresDAO, ovchipkaartDAO);
 
             // SQL-query om reizigers en hun adressen op te halen met een LEFT JOIN
             String query = "SELECT r.voorletters, r.tussenvoegsel, r.achternaam, r.geboortedatum, " +
@@ -40,7 +43,6 @@ public class Main {
                 java.sql.Date geboortedatum = rs.getDate("geboortedatum");
 
                 // Haal adresgegevens op (misschien null als de reiziger geen adres heeft)
-                int adresId = rs.getInt("adres_id");
                 String postcode = rs.getString("postcode");
                 String huisnummer = rs.getString("huisnummer");
                 String straat = rs.getString("straat");
@@ -68,7 +70,7 @@ public class Main {
     }
 
     // Test alle CRUD-methoden van de ReizigerDAO
-    private static void testReizigerDAO(ReizigerDAO rdao, AdresDAO adao) throws Exception {
+    private static void testReizigerDAO(ReizigerDAO rdao, AdresDAO adao, OVChipkaartDAO ovdao) throws Exception {
         System.out.println("\n---------- Test ReizigerDAO -------------");
 
         // Haal alle reizigers op uit de database
@@ -81,7 +83,7 @@ public class Main {
 
         // Maak een nieuwe reiziger aan en sla deze op in de database
         java.sql.Date gbdatum = java.sql.Date.valueOf("2000-03-14");
-        Reiziger sietske = new Reiziger(8, "K", "van", "Janne", gbdatum);
+        Reiziger sietske = new Reiziger(9, "K", "van", "Janne", gbdatum);
         System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
         boolean saved = rdao.save(sietske);
         if (saved) {
@@ -97,14 +99,14 @@ public class Main {
         sietske.setAchternaam("Janssen");
         boolean updated = rdao.update(sietske);
         if (updated) {
-            Reiziger updatedReiziger = rdao.findById(8);  // Het ID van de toegevoegde reiziger
+            Reiziger updatedReiziger = rdao.findById(9);  // Het ID van de toegevoegde reiziger
             System.out.println("[Test] Geüpdatete reiziger: " + updatedReiziger + "\n");
         } else {
             System.out.println("[Test] Het updaten van de reiziger is mislukt.\n");
         }
 
         // Maak een adres voor de reiziger en sla deze op in de database
-        Adres sietskeAdres = new Adres(7, "1234AB", "56", "Kerkstraat", "Utrecht", 7);
+        Adres sietskeAdres = new Adres(9, "1234AB", "56", "Kerkstraat", "Utrecht", 9);
         boolean adresSaved = adao.Save(sietskeAdres);
         if (adresSaved) {
             System.out.println("[Test] Adres opgeslagen voor Sietske: " + sietskeAdres + "\n");
@@ -132,20 +134,13 @@ public class Main {
         }
 
         // Test het verwijderen van een reiziger
-        System.out.println("[Test] ReizigerDAO.delete() - Verwijder de reiziger met ID 8.");
-        boolean deleted = rdao.delete(sietske);
+        System.out.println("[Test] ReizigerDAO.delete() - Verwijder de reiziger met ID 9.");
+        boolean deleted = rdao.delete(rdao.findById(9));
         if (deleted) {
             reizigers = rdao.findAll();
             System.out.println("[Test] Na ReizigerDAO.delete() zijn er " + reizigers.size() + " reizigers.\n");
         } else {
             System.out.println("[Test] Het verwijderen van de reiziger is mislukt.\n");
-        }
-
-        // Test opnieuw de findAll() methoden voor reizigers en adressen
-        System.out.println("[Test] ReizigerDAO.findAll() geeft nu de volgende reizigers:");
-        reizigers = rdao.findAll();
-        for (Reiziger r : reizigers) {
-            System.out.println(r);
         }
     }
 }

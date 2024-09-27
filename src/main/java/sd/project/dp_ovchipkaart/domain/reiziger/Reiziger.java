@@ -1,7 +1,11 @@
 package sd.project.dp_ovchipkaart.domain.reiziger;
 
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import sd.project.dp_ovchipkaart.domain.OV_chipkaart.OV_chipkaart;
 import sd.project.dp_ovchipkaart.domain.adres.Adres;
+
+import java.util.List;
 
 public class Reiziger {
     private int reiziger_id;
@@ -10,6 +14,7 @@ public class Reiziger {
     private String achternaam;
     private java.sql.Date geboortedatum;
     private Adres adres;
+    private List<OV_chipkaart> ovchipkaart;
 
     public Reiziger() {
     }
@@ -21,7 +26,7 @@ public class Reiziger {
         this.achternaam = anm;
         this.geboortedatum = gbtdtm;
     }
-
+    @Id
     public int getId() {
         return reiziger_id;
     }
@@ -79,5 +84,13 @@ public class Reiziger {
 
     public void setAdres(Adres adres) {
         this.adres = adres;
+    }
+
+    public List<OV_chipkaart> getOvchipkaarten() {
+        return ovchipkaart;
+    }
+
+    public void setOvchipkaart(List<OV_chipkaart> ovchipkaart) {
+        this.ovchipkaart = ovchipkaart;
     }
 }
