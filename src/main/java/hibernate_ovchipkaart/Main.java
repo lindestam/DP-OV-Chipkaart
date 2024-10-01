@@ -32,28 +32,28 @@ public class Main {
         factory.close();  // Sluit de factory aan het einde van de applicatie
     }
 
-    private static void testAdresDAO(adresDAO adresDAO, reizigerDAO reizigerDAO) {
+    private static void testAdresDAO(AdresDAOH adresDAO, ReizigerDAOH reizigerDAO) {
         System.out.println("\n---------- Test AdresDAO -------------");
-        List<reiziger> reizigers = reizigerDAO.findAll();
+        List<ReizigerH> reizigers = reizigerDAO.findAll();
         System.out.println("[Test] ReizigerDAO.findAll() geeft de volgende reizigers:");
-        for (reiziger r : reizigers) {
+        for (ReizigerH r : reizigers) {
             System.out.println(r);
         }
         System.out.println();
 
         String gbdatum = "1981-03-14";
-        reiziger sietske = new reiziger(77, "S", "", "Boers", java.sql.Date.valueOf(gbdatum));
+        ReizigerH sietske = new ReizigerH(77, "S", "", "Boers", java.sql.Date.valueOf(gbdatum));
         System.out.print("[Test] Eerst " + reizigers.size() + " reizigers, na ReizigerDAO.save() ");
         reizigerDAO.save(sietske);
         reizigers = reizigerDAO.findAll();
         System.out.println(reizigers.size() + " reizigers\n");
 
         // Maak een adres aan en koppel het aan de reiziger
-        adres a = new adres();
-        adres.setPostcode("1234AB");
-        adres.setHuisnummer("1");
-        adres.setStraat("Hoofdstraat");
-        adres.setWoonplaats("Amsterdam");
+        AdresH a = new AdresH();
+        a.setPostcode("1234AB");
+        a.setHuisnummer("1");
+        a.setStraat("Hoofdstraat");
+        a.setWoonplaats("Amsterdam");
         sietske.setAdres(a);
 
         // Sla de reiziger (met adres) op
@@ -61,7 +61,7 @@ public class Main {
         System.out.println("Reiziger met adres opgeslagen: " + sietske);
 
         // Haal het adres op via de reiziger
-        adres gevondenAdres = adresDAO.findByReiziger(sietske);
+        AdresH gevondenAdres = adresDAO.findByReiziger(sietske);
         System.out.println("Gevonden adres: " + gevondenAdres);
 
         // Update het adres
@@ -74,20 +74,20 @@ public class Main {
         System.out.println("Adres verwijderd. Huidige adressen: " + adresDAO.findAll());
     }
 
-    private static void testOVChipkaartDAO(OV_ChipkaartDAO ovChipkaartDAO, reizigerDAO reizigerDAO) throws SQLException {
+    private static void testOVChipkaartDAO(OV_ChipkaartDAO ovChipkaartDAO, ReizigerDAOH reizigerDAO) throws SQLException {
         System.out.println("\n---------- Test OVChipkaartDAO -------------");
 
         // Haal reizigers op
-        List<reiziger> reizigers = reizigerDAO.findAll();
+        List<ReizigerH> reizigers = reizigerDAO.findAll();
         System.out.println("[Test] ReizigerDAO.findAll() geeft de volgende reizigers:");
-        for (reiziger r : reizigers) {
+        for (ReizigerH r : reizigers) {
             System.out.println(r);
         }
         System.out.println();
 
         // Voeg een nieuwe reiziger toe
         String gbdatum = "1990-06-21";
-        reiziger jan = new reiziger(88, "J", "", "Jansen", java.sql.Date.valueOf(gbdatum));
+        ReizigerH jan = new ReizigerH(88, "J", "", "Jansen", java.sql.Date.valueOf(gbdatum));
         reizigerDAO.save(jan);
 
         // Maak een OV-chipkaart aan voor Jan

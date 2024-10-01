@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "adres")
-public class adres {
+public class AdresH {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +27,9 @@ public class adres {
 
     // Relatie met Reiziger
     @OneToOne(mappedBy = "adres", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private sd.project.dp_ovchipkaart.domain.reiziger.Reiziger reiziger;
+    private ReizigerH reiziger;
 
-    public adres() {}
+    public AdresH() {}
 
     // Getters en Setters
 
@@ -73,11 +73,11 @@ public class adres {
         this.woonplaats = woonplaats;
     }
 
-    public sd.project.dp_ovchipkaart.domain.reiziger.Reiziger getReiziger() {
+    public ReizigerH getReiziger() {
         return reiziger;
     }
 
-    public void setReiziger(Reiziger reiziger) {
+    public void setReiziger(ReizigerH reiziger) {
         this.reiziger = reiziger;
     }
 

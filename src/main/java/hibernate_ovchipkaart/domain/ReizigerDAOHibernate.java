@@ -3,12 +3,10 @@ package hibernate_ovchipkaart.domain;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import sd.project.dp_ovchipkaart.domain.reiziger.Reiziger;
-import sd.project.dp_ovchipkaart.domain.reiziger.ReizigerDAO;
 
 import java.util.List;
 
-public class ReizigerDAOHibernate implements reizigerDAO {
+public class ReizigerDAOHibernate implements ReizigerDAOH {
 
     private final SessionFactory sessionFactory;
 
@@ -17,7 +15,7 @@ public class ReizigerDAOHibernate implements reizigerDAO {
     }
 
     @Override
-    public boolean save(Reiziger reiziger) {
+    public boolean save(ReizigerH reiziger) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -31,7 +29,7 @@ public class ReizigerDAOHibernate implements reizigerDAO {
     }
 
     @Override
-    public boolean update(Reiziger reiziger) {
+    public boolean update(ReizigerH reiziger) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -46,7 +44,7 @@ public class ReizigerDAOHibernate implements reizigerDAO {
     }
 
     @Override
-    public boolean delete(Reiziger reiziger) {
+    public boolean delete(ReizigerH reiziger) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -61,9 +59,9 @@ public class ReizigerDAOHibernate implements reizigerDAO {
     }
 
     @Override
-    public Reiziger findById(int id) {
+    public ReizigerH findById(int id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.get(Reiziger.class, id);
+            return session.get(ReizigerH.class, id);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -71,9 +69,9 @@ public class ReizigerDAOHibernate implements reizigerDAO {
     }
 
     @Override
-    public List<Reiziger> findAll() {
+    public List<ReizigerH> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM Reiziger", Reiziger.class).list();
+            return session.createQuery("FROM ReizigerH", ReizigerH.class).list();
         } catch (Exception e) {
             e.printStackTrace();
             return null;

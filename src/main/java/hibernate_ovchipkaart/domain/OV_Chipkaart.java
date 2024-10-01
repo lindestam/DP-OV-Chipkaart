@@ -1,7 +1,5 @@
 package hibernate_ovchipkaart.domain;
 
-import sd.project.dp_ovchipkaart.domain.reiziger.Reiziger;
-
 import javax.persistence.*;
 import java.sql.Date;
 
@@ -25,12 +23,12 @@ public class OV_Chipkaart {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reiziger_id")
-    private sd.project.dp_ovchipkaart.domain.reiziger.Reiziger reiziger;
+    private ReizigerH reiziger;
 
     public OV_Chipkaart() {}
 
     // Constructor
-    public OV_Chipkaart(int kaartNummer, Date geldigTot, int klasse, double saldo, sd.project.dp_ovchipkaart.domain.reiziger.Reiziger reiziger) {
+    public OV_Chipkaart(int kaartNummer, Date geldigTot, int klasse, double saldo, ReizigerH reiziger) {
         this.kaart_nummer = kaartNummer;
         this.geldig_tot = geldigTot;
         this.klasse = klasse;
@@ -72,11 +70,11 @@ public class OV_Chipkaart {
         this.saldo = saldo;
     }
 
-    public sd.project.dp_ovchipkaart.domain.reiziger.Reiziger getReiziger() {
+    public ReizigerH getReiziger() {
         return reiziger;
     }
 
-    public void setReiziger(Reiziger reiziger) {
+    public void setReiziger(ReizigerH reiziger) {
         this.reiziger = reiziger;
     }
 

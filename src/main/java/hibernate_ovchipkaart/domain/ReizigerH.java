@@ -3,7 +3,7 @@ package hibernate_ovchipkaart.domain;
 import org.hibernate.annotations.Cascade;
 import sd.project.dp_ovchipkaart.domain.OV_chipkaart.OV_chipkaart;
 import sd.project.dp_ovchipkaart.domain.adres.Adres;
-
+import org.hibernate.annotations.CascadeType;
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "reiziger")
-public class reiziger {
+public class ReizigerH {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,15 +33,15 @@ public class reiziger {
 
     // Relatie met Adres
     @OneToOne(fetch = FetchType.LAZY)
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @Cascade(CascadeType.ALL)
     @JoinColumn(name = "adres_id", referencedColumnName = "adres_id")
-    private Adres adres;
+    private AdresH adres;
 
     @OneToMany(mappedBy = "reiziger")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    private List<OV_chipkaart> ovChipkaarten = new ArrayList<>();
+    @Cascade(CascadeType.ALL)
+    private List<OV_Chipkaart> ovChipkaarten = new ArrayList<>();
 
-    public reiziger(int i, String s, String string, String boers, Date date) {
+    public ReizigerH(int i, String s, String string, String boers, Date date) {
         this.id = i;
         this.voorletters = s;
         this.tussenvoegsel = string;
@@ -92,11 +92,11 @@ public class reiziger {
         this.geboortedatum = geboortedatum;
     }
 
-    public Adres getAdres() {
+    public AdresH getAdres() {
         return adres;
     }
 
-    public void setAdres(Adres adres) {
+    public void setAdres(AdresH adres) {
         this.adres = adres;
         if (adres != null) {
             adres.setReiziger(this);
@@ -115,11 +115,11 @@ public class reiziger {
                 '}';
     }
 
-    public List<OV_chipkaart> getOvChipkaarten() {
+    public List<OV_Chipkaart> getOvChipkaarten() {
         return ovChipkaarten;
     }
 
-    public void setOvChipkaarten(List<OV_chipkaart> ovChipkaarten) {
+    public void setOvChipkaarten(List<OV_Chipkaart> ovChipkaarten) {
         this.ovChipkaarten = ovChipkaarten;
     }
 }

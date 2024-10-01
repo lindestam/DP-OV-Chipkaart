@@ -3,9 +3,6 @@ package hibernate_ovchipkaart.domain;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import sd.project.dp_ovchipkaart.domain.OV_chipkaart.OVChipkaartDAO;
-import sd.project.dp_ovchipkaart.domain.OV_chipkaart.OV_chipkaart;
-import sd.project.dp_ovchipkaart.domain.reiziger.Reiziger;
 
 import java.util.List;
 
@@ -16,7 +13,7 @@ public class OVChipkaartDAOHibernate implements OV_ChipkaartDAO {
         this.sessionFactory = sessionFactory;
     }
 
-    public boolean save(OV_chipkaart ovChipkaart) {
+    public boolean save(OV_Chipkaart ovChipkaart) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -29,7 +26,7 @@ public class OVChipkaartDAOHibernate implements OV_ChipkaartDAO {
         }
     }
 
-    public boolean update(OV_chipkaart ovChipkaart) {
+    public boolean update(OV_Chipkaart ovChipkaart) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -42,7 +39,7 @@ public class OVChipkaartDAOHibernate implements OV_ChipkaartDAO {
         }
     }
 
-    public boolean delete(OV_chipkaart ovChipkaart) {
+    public boolean delete(OV_Chipkaart ovChipkaart) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -55,28 +52,28 @@ public class OVChipkaartDAOHibernate implements OV_ChipkaartDAO {
         }
     }
 
-    public OV_chipkaart findByKaartNummer(int kaartNummer) {
+    public OV_Chipkaart findByKaartNummer(int kaartNummer) {
         try (Session session = sessionFactory.openSession()) {
-            return session.get(OV_chipkaart.class, kaartNummer);
+            return session.get(OV_Chipkaart.class, kaartNummer);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<OV_chipkaart> findAll() {
+    public List<OV_Chipkaart> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM OV_chipkaart", OV_chipkaart.class).list();
+            return session.createQuery("FROM OV_Chipkaart", OV_Chipkaart.class).list();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<OV_chipkaart> findByReiziger(Reiziger reiziger) {
+    public List<OV_Chipkaart> findByReiziger(ReizigerH r) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM OV_chipkaart WHERE reiziger = :reiziger", OV_chipkaart.class)
-                    .setParameter("reiziger", reiziger)
+            return session.createQuery("FROM OV_Chipkaart WHERE reiziger = :reiziger", OV_Chipkaart.class)
+                    .setParameter("reiziger", r)
                     .list();
         } catch (Exception e) {
             e.printStackTrace();

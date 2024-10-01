@@ -3,20 +3,18 @@ package hibernate_ovchipkaart.domain;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import sd.project.dp_ovchipkaart.domain.adres.Adres;
-import sd.project.dp_ovchipkaart.domain.reiziger.Reiziger;
 
 
 import java.util.List;
-public class AdresDAOHibernate implements adresDAO {
+public class AdresDAOHibernate implements AdresDAOH {
     private final SessionFactory sessionFactory;
 
     public AdresDAOHibernate(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
-    @Override
-    public void save(adres adres) {
+
+    public void save(AdresH adres) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -28,8 +26,8 @@ public class AdresDAOHibernate implements adresDAO {
         }
     }
 
-    @Override
-    public void update(adres adres) {
+
+    public void update(AdresH adres) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -41,8 +39,8 @@ public class AdresDAOHibernate implements adresDAO {
         }
     }
 
-    @Override
-    public void delete(adres adres) {
+
+    public void delete(AdresH adres) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
@@ -54,10 +52,10 @@ public class AdresDAOHibernate implements adresDAO {
         }
     }
 
-    @Override
-    public adres findByReiziger(reiziger reiziger) {
+
+    public AdresH findByReiziger(ReizigerH reiziger) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM Adres WHERE reiziger = :reiziger", adres.class)
+            return session.createQuery("FROM AdresH WHERE reiziger = :reiziger", AdresH.class)
                     .setParameter("reiziger", reiziger)
                     .uniqueResult();
         } catch (Exception e) {
@@ -67,29 +65,9 @@ public class AdresDAOHibernate implements adresDAO {
     }
 
     @Override
-    public void save(Adres adres) {
-
-    }
-
-    @Override
-    public void delete(Adres adres) {
-
-    }
-
-    @Override
-    public void update(Adres adres) {
-
-    }
-
-    @Override
-    public Adres findByReiziger(Reiziger reiziger) {
-        return null;
-    }
-
-    @Override
-    public List<adres> findAll() {
+    public List<AdresH> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM Adres", adres.class).list();
+            return session.createQuery("FROM AdresH", AdresH.class).list();
         } catch (Exception e) {
             e.printStackTrace();
             return null;

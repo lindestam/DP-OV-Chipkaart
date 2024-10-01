@@ -30,7 +30,7 @@ public class OVChipkaartDAOPsql implements OVChipkaartDAO{
         ps.setInt(5, ovChipkaart.getReiziger().getId());
         ps.execute();
         ps.close();
-        if(ProductDAOPsql != null) {
+        if(productDAOPsql != null) {
             for(Product product: ovChipkaart.getProducten()) {
 
             }
