@@ -1,12 +1,12 @@
-import javax.persistence.*;
+package hibernate_ovchipkaart.domain;
 
-import javax.persistence.*;
+import sd.project.dp_ovchipkaart.domain.reiziger.Reiziger;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "adres")
-public class Adres {
+public class adres {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +27,9 @@ public class Adres {
 
     // Relatie met Reiziger
     @OneToOne(mappedBy = "adres", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private Reiziger reiziger;
+    private sd.project.dp_ovchipkaart.domain.reiziger.Reiziger reiziger;
 
-    public Adres() {}
+    public adres() {}
 
     // Getters en Setters
 
@@ -73,7 +73,7 @@ public class Adres {
         this.woonplaats = woonplaats;
     }
 
-    public Reiziger getReiziger() {
+    public sd.project.dp_ovchipkaart.domain.reiziger.Reiziger getReiziger() {
         return reiziger;
     }
 

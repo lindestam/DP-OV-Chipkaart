@@ -1,5 +1,9 @@
+package hibernate_ovchipkaart.domain;
+
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+import sd.project.dp_ovchipkaart.domain.OV_chipkaart.OV_chipkaart;
+import sd.project.dp_ovchipkaart.domain.adres.Adres;
+
 import javax.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -8,7 +12,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "reiziger")
-public class Reiziger {
+public class reiziger {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,15 +33,15 @@ public class Reiziger {
 
     // Relatie met Adres
     @OneToOne(fetch = FetchType.LAZY)
-    @Cascade(CascadeType.ALL)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JoinColumn(name = "adres_id", referencedColumnName = "adres_id")
     private Adres adres;
 
     @OneToMany(mappedBy = "reiziger")
-    @Cascade(CascadeType.ALL)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<OV_chipkaart> ovChipkaarten = new ArrayList<>();
 
-    public Reiziger(int i, String s, String string, String boers, Date date) {
+    public reiziger(int i, String s, String string, String boers, Date date) {
         this.id = i;
         this.voorletters = s;
         this.tussenvoegsel = string;
@@ -119,3 +123,4 @@ public class Reiziger {
         this.ovChipkaarten = ovChipkaarten;
     }
 }
+

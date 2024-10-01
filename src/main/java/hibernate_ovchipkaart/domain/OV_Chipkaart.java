@@ -1,11 +1,13 @@
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
+package hibernate_ovchipkaart.domain;
+
+import sd.project.dp_ovchipkaart.domain.reiziger.Reiziger;
+
 import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
 @Table(name = "ov_chipkaart")
-public class OV_chipkaart {
+public class OV_Chipkaart {
 
     @Id
     @GeneratedValue
@@ -23,12 +25,12 @@ public class OV_chipkaart {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reiziger_id")
-    private Reiziger reiziger;
+    private sd.project.dp_ovchipkaart.domain.reiziger.Reiziger reiziger;
 
-    public OV_chipkaart() {}
+    public OV_Chipkaart() {}
 
     // Constructor
-    public OV_chipkaart(int kaartNummer, Date geldigTot, int klasse, double saldo, Reiziger reiziger) {
+    public OV_Chipkaart(int kaartNummer, Date geldigTot, int klasse, double saldo, sd.project.dp_ovchipkaart.domain.reiziger.Reiziger reiziger) {
         this.kaart_nummer = kaartNummer;
         this.geldig_tot = geldigTot;
         this.klasse = klasse;
@@ -70,7 +72,7 @@ public class OV_chipkaart {
         this.saldo = saldo;
     }
 
-    public Reiziger getReiziger() {
+    public sd.project.dp_ovchipkaart.domain.reiziger.Reiziger getReiziger() {
         return reiziger;
     }
 
@@ -88,3 +90,4 @@ public class OV_chipkaart {
                 '}';
     }
 }
+

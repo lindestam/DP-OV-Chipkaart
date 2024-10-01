@@ -1,5 +1,8 @@
 package sd.project.dp_ovchipkaart.domain.OV_chipkaart;
 
+import sd.project.dp_ovchipkaart.domain.product.Product;
+import sd.project.dp_ovchipkaart.domain.product.ProductDAO;
+import sd.project.dp_ovchipkaart.domain.product.ProductDAOPsql;
 import sd.project.dp_ovchipkaart.domain.reiziger.Reiziger;
 
 import java.sql.Connection;
@@ -11,6 +14,7 @@ import java.util.List;
 
 public class OVChipkaartDAOPsql implements OVChipkaartDAO{
     private Connection conn;
+    private ProductDAOPsql productDAOPsql;
     public OVChipkaartDAOPsql(Connection conn) {
         this.conn = conn;
     }
@@ -24,6 +28,13 @@ public class OVChipkaartDAOPsql implements OVChipkaartDAO{
         ps.setInt(3, ovChipkaart.getKlasse());
         ps.setInt(4, ovChipkaart.getSaldo());
         ps.setInt(5, ovChipkaart.getReiziger().getId());
+        ps.execute();
+        ps.close();
+        if(ProductDAOPsql != null) {
+            for(Product product: ovChipkaart.getProducten()) {
+
+            }
+        }
         return ps.executeUpdate() > 0;
     }
 

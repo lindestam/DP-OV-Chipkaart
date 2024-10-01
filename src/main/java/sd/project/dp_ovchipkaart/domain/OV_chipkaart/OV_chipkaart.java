@@ -4,6 +4,7 @@ import sd.project.dp_ovchipkaart.domain.product.Product;
 import sd.project.dp_ovchipkaart.domain.reiziger.Reiziger;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OV_chipkaart {
@@ -20,6 +21,7 @@ public class OV_chipkaart {
         this.klasse = klasse;
         this.saldo = saldo;
         this.reiziger = reiziger;
+        producten = new ArrayList<>();
     }
     public OV_chipkaart() {}
 
@@ -54,8 +56,26 @@ public class OV_chipkaart {
     public void setSaldo(int saldo) {
         this.saldo = saldo;
     }
+
     public Reiziger getReiziger() {
         return reiziger;
+    }
+    public List<Product> getProducten() {
+        return producten;
+    }
+    public void voegProductToe(Product product) {
+        if (!this.producten.contains(product)) {
+            this.producten.add(product);
+            product.voegOVChipkaartToe(this);  // Zorg ervoor dat de bidirectionele relatie wordt beheerd
+        }
+    }
+
+    // Methode om een product te verwijderen
+    public void verwijderProduct(Product product) {
+        if (this.producten.contains(product)) {
+            this.producten.remove(product);
+            product.verwijderOVChipkaart(this);  // Zorg ervoor dat de bidirectionele relatie wordt beheerd
+        }
     }
 
     public void setReiziger(Reiziger reiziger) {
