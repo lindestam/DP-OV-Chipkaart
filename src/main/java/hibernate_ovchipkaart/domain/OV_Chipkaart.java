@@ -2,6 +2,8 @@ package hibernate_ovchipkaart.domain;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "ov_chipkaart")
@@ -24,6 +26,14 @@ public class OV_Chipkaart {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reiziger_id")
     private ReizigerH reiziger;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "ov_chipkaart_product",
+            joinColumns = @JoinColumn(name = "kaart_nummer"),
+            inverseJoinColumns = @JoinColumn(name = "product_nummer")
+    )
+    private List<ProductH> producten = new ArrayList<>();
 
     public OV_Chipkaart() {}
 
@@ -86,6 +96,24 @@ public class OV_Chipkaart {
                 ", klasse=" + klasse +
                 ", saldo=" + saldo +
                 '}';
+    }
+
+    public List<ProductH> getProducten() {
+        return producten;
+    }
+
+    public void setProducten(List<ProductH> producten) {
+        this.producten = producten;
+    }
+    public void voegProductToe(ProductH product) {
+        producten.add(product);
+        product.getOvchipkaarten().add(this);
+    }
+
+    // Methode om een product te verwijderen
+    public void verwijderProduct(ProductH product) {
+        producten.remove(product);
+        product.getOvchipkaarten().remove(this);
     }
 }
 

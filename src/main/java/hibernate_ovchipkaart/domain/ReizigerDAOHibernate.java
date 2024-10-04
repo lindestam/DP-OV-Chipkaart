@@ -3,7 +3,12 @@ package hibernate_ovchipkaart.domain;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReizigerDAOHibernate implements ReizigerDAOH {
@@ -71,10 +76,16 @@ public class ReizigerDAOHibernate implements ReizigerDAOH {
     @Override
     public List<ReizigerH> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM ReizigerH", ReizigerH.class).list();
+            CriteriaBuilder cb = (CriteriaBuilder) session.getCriteriaBuilder();
+            CriteriaQuery<ReizigerH> cq = cb.createQuery(ReizigerH.class);
+            Root<ReizigerH> root = cq.from(ReizigerH.class);
+            cq.select(root);
+            Query<ReizigerH> query = session.createQuery(String.valueOf(cq));
+            List<ReizigerH> reizigers = query.getResultList();
+            return reizigers;
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return null;  // Return an empty list if an error occurs
         }
     }
 }

@@ -1,5 +1,6 @@
 package sd.project.dp_ovchipkaart.domain.product;
 
+import hibernate_ovchipkaart.domain.ProductH;
 import sd.project.dp_ovchipkaart.domain.OV_chipkaart.OV_chipkaart;
 
 import java.sql.Connection;
@@ -55,7 +56,7 @@ public class ProductDAOPsql implements ProductDAO {
 
 // Voeg nieuwe relaties toe
         for(OV_chipkaart ovChipkaart : product.getOvchipkaarten()) {
-            PreparedStatement insertStatement = conn.prepareStatement("INSERT INTO ov_chipkaart_product (kaart_nummer, product_nummer) VALUES (?, ?)");
+            PreparedStatement insertStatement = conn.prepareStatement("update ov_chipkaart_product (kaart_nummer, product_nummer) VALUES (?, ?)");
             insertStatement.setInt(1, ovChipkaart.getKaart_nummer());
             insertStatement.setInt(2, product.getProduct_nummer());
             insertStatement.execute();
@@ -80,7 +81,7 @@ public class ProductDAOPsql implements ProductDAO {
         }
         return products;
     }
-    public List<Product> findAll() throws SQLException {
+    public List<ProductH> findAll() throws SQLException {
         String query = "select * from product";
         PreparedStatement preparedStatement = conn.prepareStatement(query);
         ResultSet resultSet = preparedStatement.executeQuery();

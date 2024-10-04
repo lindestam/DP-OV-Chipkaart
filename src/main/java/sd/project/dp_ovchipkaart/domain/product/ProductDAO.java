@@ -1,10 +1,9 @@
 package sd.project.dp_ovchipkaart.domain.product;
 
+import hibernate_ovchipkaart.domain.ProductH;
 import sd.project.dp_ovchipkaart.domain.OV_chipkaart.OV_chipkaart;
-import sd.project.dp_ovchipkaart.domain.reiziger.Reiziger;
 
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.List;
 
 public interface ProductDAO {
@@ -12,5 +11,5 @@ public interface ProductDAO {
     public boolean delete(Product product) throws SQLException;
     public boolean update(Product product) throws SQLException;
     public List<Product> findByOVChipkaart(OV_chipkaart ovChipkaart) throws SQLException;
-    public List<Product> findAll() throws SQLException;
+    public List<ProductH> findAll() throws SQLException;
 }

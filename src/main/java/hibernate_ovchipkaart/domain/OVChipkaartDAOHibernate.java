@@ -3,7 +3,11 @@ package hibernate_ovchipkaart.domain;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class OVChipkaartDAOHibernate implements OV_ChipkaartDAO {
@@ -63,21 +67,32 @@ public class OVChipkaartDAOHibernate implements OV_ChipkaartDAO {
 
     public List<OV_Chipkaart> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM OV_Chipkaart", OV_Chipkaart.class).list();
+            CriteriaBuilder cb = (CriteriaBuilder) session.getCriteriaBuilder();
+            CriteriaQuery<OV_Chipkaart> cq = cb.createQuery(OV_Chipkaart.class);
+            Root<OV_Chipkaart> root = cq.from(OV_Chipkaart.class);
+            cq.select(root);
+
+            Query<OV_Chipkaart> query = session.createQuery(cq.toString());
+            return query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public List<OV_Chipkaart> findByReiziger(ReizigerH r) {
+    public List<OV_Chipkaart> findByReiziger(ReizigerH reiziger) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("FROM OV_Chipkaart WHERE reiziger = :reiziger", OV_Chipkaart.class)
-                    .setParameter("reiziger", r)
-                    .list();
+            CriteriaBuilder cb = (CriteriaBuilder) session.getCriteriaBuilder();
+            CriteriaQuery<OV_Chipkaart> cq = cb.createQuery(OV_Chipkaart.class);
+            Root<OV_Chipkaart> root = cq.from(OV_Chipkaart.class);
+
+            cq.select(root).where(cb.equal(root.get("reiziger"), reiziger));
+            Query<OV_Chipkaart> query = session.createQuery(cq.toString());
+            return query.getResultList();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 }
+

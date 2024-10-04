@@ -4,6 +4,7 @@ import hibernate_ovchipkaart.domain.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -11,6 +12,8 @@ public class Main {
 
     // Creëer een factory voor Hibernate sessions.
     private static final SessionFactory factory;
+
+
 
     static {
         try {
@@ -25,9 +28,11 @@ public class Main {
         AdresDAOHibernate adresDAO = new AdresDAOHibernate(factory);
         ReizigerDAOHibernate reizigerDAO = new ReizigerDAOHibernate(factory);
         OVChipkaartDAOHibernate ovChipkaartDAO = new OVChipkaartDAOHibernate(factory);
+        ProductDAOHibernate productDAO = new ProductDAOHibernate(factory);
 
         testAdresDAO(adresDAO, reizigerDAO); // Test adresDAO
         testOVChipkaartDAO(ovChipkaartDAO, reizigerDAO); // Test OVChipkaartDAO
+        testProduct(ovChipkaartDAO, productDAO);// OVChipkaartDAO
 
         factory.close();  // Sluit de factory aan het einde van de applicatie
     }
@@ -108,6 +113,32 @@ public class Main {
         // Verwijder de OV-chipkaart
         ovChipkaartDAO.delete(ovChipkaart);
         System.out.println("OV-chipkaart verwijderd. Huidige OV-chipkaarten: " + ovChipkaartDAO.findAll());
+    }
+    private static void testProduct(OV_ChipkaartDAO ovChipkaartDAO, ProductDAOH productDAO) throws SQLException {
+        System.out.println("\n---------- Test ProductDAO -------------");
+        List<ProductH> products = productDAO.findAll();
+        for (ProductH p : products) {
+            System.out.println(p);
+        }
+
+        // Maak een nieuwe reiziger aan
+        String gbdatum = "1990-06-21";
+        ReizigerH reiziger = new ReizigerH(88, "J", "", "Jansen", java.sql.Date.valueOf(gbdatum));
+        OV_Chipkaart ovChipkaart = new OV_Chipkaart(88, java.sql.Date.valueOf(gbdatum), 10, 20.00, reiziger);
+        ovChipkaartDAO.save(ovChipkaart);
+
+        // Maak een product aan
+        ProductH product = new ProductH("Beschrijving", "ProductNaam", 12345, 19.99);
+
+        // Voeg de OV-chipkaart toe aan het product
+        product.voegOVChipkaartToe(ovChipkaart);
+
+        // Sla het product op
+        productDAO.save(product);
+        System.out.println("Product opgeslagen: " + product);
+
+        // Test het ophalen van producten geassocieerd met de OV
+
     }
 }
 
